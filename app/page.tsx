@@ -5,6 +5,7 @@ import { useState } from "react";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-zinc-50 font-sans text-black">
@@ -49,67 +50,95 @@ export default function Home() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             {/* Modal Card */}
             <div className="relative w-[90%] max-w-md rounded-lg p-8 pb-28 text-center shadow-xl bg-white">
-              <h2 className="mb-4 text-xl font-semibold">SEND ME UPDATES</h2>
+              {submitted ? (
+                <p className="text-xl font-medium text-BLACK">
+                  Thank you! We will follow up shortly
+                </p>
+              ) : (
+                <>
+                  <h2 className="mb-4 text-xl font-semibold">SEND ME UPDATES</h2>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
 
-              <form
-                action="https://solvi7.us11.list-manage.com/subscribe/post?u=dc8985960e26176fb9fcae712&id=872789b23f&f_id=00c226e1f0"
-                method="POST"
-                target="_blank"
-                className="flex flex-col gap-3"
-              >
-                <input
-                  type="text"
-                  name="FNAME"
-                  placeholder="First Name"
-                  className="border p-3 rounded"
-                />
+                      // Show success message immediately
+                      setSubmitted(true);
 
-                <input
-                  type="text"
-                  name="LNAME"
-                  placeholder="Last Name"
-                  className="border p-3 rounded"
-                />
+                      const formData = new FormData(e.target);
 
-                <input
-                  type="email"
-                  name="EMAIL"
-                  required
-                  placeholder="Email"
-                  className="border p-3 rounded"
-                />
+                      // Submit in the background (no-cors)
+                      fetch(
+                        "https://solvi7.us11.list-manage.com/subscribe/post?u=dc8985960e26176fb9fcae712&id=872789b23f&f_id=00c226e1f0",
+                        {
+                          method: "POST",
+                          mode: "no-cors",
+                          body: formData,
+                        },
+                      );
 
-                <input
-                  type="text"
-                  name="PHONE"
-                  placeholder="Phone Number"
-                  className="border p-3 rounded"
-                />
+                      e.target.reset();
 
-                {/* Hidden bot protection field */}
-                <div className="absolute left-[-5000px]">
-                  <input
-                    type="text"
-                    name="b_dc8985960e26176fb9fcae712_872789b23f"
-                    tabIndex={-1}
-                    defaultValue=""
-                  />
-                </div>
+                      // Close modal after 3 seconds
+                      setTimeout(() => {
+                        setOpen(false);
+                        setSubmitted(false);
+                      }, 3000);
+                    }}
+                    className="flex flex-col gap-3"
+                  >
+                    <input
+                      type="text"
+                      name="FNAME"
+                      placeholder="First Name"
+                      className="border p-3 rounded"
+                    />
 
-                <button
-                  type="submit"
-                  className="cursor-pointer rounded bg-[#c16011] p-3 text-white hover:bg-[#a75a1a]"
-                >
-                  SEND
-                </button>
-              </form>
+                    <input
+                      type="text"
+                      name="LNAME"
+                      placeholder="Last Name"
+                      className="border p-3 rounded"
+                    />
 
-              <button
-                onClick={() => setOpen(false)}
-                className="mt-6 cursor-pointer text-sm text-gray-500"
-              >
-                Close
-              </button>
+                    <input
+                      type="email"
+                      name="EMAIL"
+                      required
+                      placeholder="Email"
+                      className="border p-3 rounded"
+                    />
+
+                    <input
+                      type="text"
+                      name="PHONE"
+                      placeholder="Phone Number"
+                      className="border p-3 rounded"
+                    />
+
+                    <div className="absolute left-[-5000px]">
+                      <input
+                        type="text"
+                        name="b_dc8985960e26176fb9fcae712_872789b23f"
+                        tabIndex={-1}
+                        defaultValue=""
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="cursor-pointer rounded bg-[#c16011] p-3 text-white hover:bg-[#a75a1a]"
+                    >
+                      SEND
+                    </button>
+                  </form>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="mt-6 cursor-pointer text-sm text-gray-500"
+                  >
+                    Close
+                  </button>
+                </>
+              )}
 
               <Image
                 src="/deline-logo.png"
