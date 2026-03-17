@@ -7,17 +7,16 @@ export default function Home() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans text-black">
-      <main className="flex min-h-screen w-full flex-col items-center justify-between bg-white dark:bg-black sm:items-start">
-        {/* Hero Section */}
+    <div className="flex min-h-screen w-full flex-col bg-zinc-50 font-sans text-black">
+      <main className="flex min-h-screen w-full flex-col items-stretch justify-between bg-white dark:bg-black">
         <div className="relative w-full">
           <Image
-            className="w-full"
             src="/homepage.png"
             alt="Homepage"
             width={1440}
             height={500}
             priority
+            style={{ width: "100%", height: "auto" }}
           />
 
           <button
